@@ -1,0 +1,122 @@
+
+<!doctype html>
+<html>
+<head>
+	<title>Тестовая страница</title>
+	<meta charset="utf-8" />
+	<link href="css/fonts.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link href="plugins/jquery-ui.css" rel="stylesheet">
+	<script src="/socket.io/socket.io.js"></script> 
+</head>
+<body>
+	<div class="wrapper">	
+		<header>
+			<div class="main_navigation">
+
+				<ul>
+					<li id="first">DASHBOARD</li>
+					<li id="second">CALIBRATION</li>
+					<li id="third">AVAR</li>
+					<li id="fourth">TABLES</li>
+				</ul>
+			</div>
+
+			<div class="input_settings">
+				<div class="post">
+					
+					<select id="example-select" name="my_select" >
+						<option>Выбор порта</option>
+
+					</select>
+					<input type="text" placeholder="Скорость передачи" size="40" id="speed-input">
+					<button id="click">Запуск</button>
+					<div class="developer">Режим разработчика
+						<input class="proMode checkbox" type="checkbox" id="proMode"/>
+						<label for='proMode'></label>
+					</div>
+					<div class="additionalSett">
+						<div>Turn Coordinator
+							<input type="text" placeholder="Первое значение" size="40" id="Turn1">
+							<input type="text" placeholder="Второе значение" size="40" id="Turn2">
+						</div>
+						<div>Heading Indicator
+							<input type="text" placeholder="Yaw" size="40" id="Head1">
+						</div>
+						<div>Artifical Horizon
+							<input type="text" placeholder="Roll" size="40" id="Art1">
+							<input type="text" placeholder="Pitch" size="40" id="Art2">
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="button_toggle">
+				<input type="checkbox"><span class="transform"></span>
+			</div>
+			<div class="circleButton">
+				<div class="plus">+</div>
+			</div>
+			<div class="firstBlock"></div>
+			<div class="secondBlock"></div>
+			<div class="mainBlock1">
+				<div class="cockpit">
+					Cockpit
+					<div class="elements">
+						<div class="blockPitch">
+							<div class="arrow"></div>
+							<div class="background"></div>
+							<div class="circle"></div>
+							<div class="text">
+								Turn Coordinator
+							</div>
+						</div>
+
+						<div class="blockRoll">
+							<div class="arrow"></div>
+							<div class="background"></div>
+							<div class="text">
+								Heading Indicator
+							</div>
+						</div>
+						<div class="blockHaw">
+							<div class="Wrapper"></div>
+							<div class="cirle"></div>
+							<div class="arrow"></div>
+							<div class="backgroundWrapper">
+								<div class="background"></div>
+							</div>
+							<div class="text">
+								Artifical Horizon
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+
+			<div class="mainBlock2">
+
+				<div id="map"></div>
+			</div>
+
+			<div class="mainBlock3">
+
+				<div id="map"></div>
+			</div>
+
+			<div class="mainBlock4">
+
+				<div id="map"></div>
+			</div>
+
+
+
+		</header>
+	</div>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

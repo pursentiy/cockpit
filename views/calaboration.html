@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html>
+<head>
+	<title>Тестовая страница</title>
+	<meta charset="utf-8" />
+	<link href="css/fonts.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+	<link href="plugins/jquery-ui.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="/socket.io/socket.io.js"></script> 
+
+</head>
+<body class="calaboration">
+
+	<div class="logInfo">
+		<ul class="progressCheck">
+			<li class="item1">1</li>
+			<li class="item2">2</li>
+			<li class="item3">3</li>
+			<li class="item4">4</li>
+			<li class="item5">5</li>
+			<li class="item6">6</li>
+		</ul>
+	</div>
+
+	<div class="wrapper">	
+		<header>
+			<div class="main_navigation">
+
+				<ul>
+					<li id="first">DASHBOARD</li>
+					<li id="second">CALIBRATION</li>
+					<li id="third">AVAR</li>
+					<li id="fourth">TABLES</li>
+				</ul>
+			</div>
+
+			<div class="input_settings">
+				<div class="post">
+					
+					<select id="example-select" name="my_select" >
+						<option>Выбор порта</option>
+
+					</select>
+					<input type="text" placeholder="Скорость передачи" size="40" id="speed-input">
+					<button id="clickCalaboration">Запуск</button>
+					<div class="developer">Режим разработчика
+						<input class="proMode checkbox" type="checkbox" id="proMode"/>
+						<label for='proMode'></label>
+					</div>
+					<div class="additionalSett">
+						<div>Turn Coordinator
+							<input type="text" placeholder="Первое значение" size="40" id="Turn1">
+							<input type="text" placeholder="Второе значение" size="40" id="Turn2">
+						</div>
+						<div>Heading Indicator
+							<input type="text" placeholder="Yaw" size="40" id="Head1">
+						</div>
+						<div>Artifical Horizon
+							<input type="text" placeholder="Roll" size="40" id="Art1">
+							<input type="text" placeholder="Pitch" size="40" id="Art2">
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="button_toggle">
+				<input type="checkbox"><span class="transform"></span>
+			</div>
+			<div class="circleButton">
+				<div class="plus">+</div>
+			</div>
+			<div class="firstBlock section2">
+				<h1>Калибровка датчика</h1>
+			</div>
+
+
+
+			<div class="section2">
+				<div class="block1">
+					<div class="w3-light-grey">
+						<div id="myBar" class="w3-container w3-green w3-center" style="width:20%">20%</div>
+						<button class="w3-button w3-green" id="scan" onclick="move()">Click Me</button> 
+					</div>
+					<div class="center" >
+						<label class="label">
+							<input  class="label__checkbox" type="checkbox" />
+							<span class="label__text" >
+								<span class="label__check">
+									<i class="fa fa-check icon"></i>
+								</span>
+							</span>
+						</label>
+					</div>
+				</div>
+				<div class="block2"></div>
+				<div class="block3"></div>
+				<div class="block4"></div>
+				<div class="block5"></div>
+				<div class="block6"></div>
+			</div>
+
+
+
+
+
+		</header>
+	</div>
+		<script type="text/javascript" src="js/calaboration.js"></script>
+</body>
+</html>
