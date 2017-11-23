@@ -220,9 +220,9 @@ $(function() {
 
 //Меню
 $('.button_toggle').on('click',function(){
-	$('.wrapper').toggleClass('open');
-	$('.button_toggle').toggleClass('open');
-});
+        $('.main_navigation').toggleClass('open');
+      });
+
 
 //Вкладка1
 $('#first').on('click',function(){

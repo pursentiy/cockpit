@@ -1,5 +1,5 @@
 {
-  "name": "cockpit",
+  "name": "123",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -8,8 +8,10 @@
     "express": "^4.15.2",
     "expre": "^0.1.1",
     "fs": "^0.0.1-security",
+    "least-squares": "^0.0.2",
     "mathjs": "^3.16.5",
     "path": "^0.12.7",
+    "regression": "^2.0.0",
     "serialport": "^4.0.7",
     "socket.io": "^2.0.3"
   },

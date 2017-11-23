@@ -4,16 +4,39 @@
 var obj = {};
 var data, dataCOM, select = document.getElementById("example-select"), checkingCOM = false, data = {}, speedInput = document.getElementById("speed-input");
 var roll, cockpitNum = [];
-var scanTest = {}, click = 1;
+var scanTest = {}, click = 1, matrix;
 var socket = io(); 
 var scan = document.getElementById("scan"), timer;
+var text = document.getElementById('text'), head_window =  document.getElementById('head_window');
 
 scanTest.test = 'check'
 scanTest.number = 1;
 
+setTimeout(function() {
+  $('.window').css(
+    'display','block');
+  setTimeout(function () {
+    $('.window').css(
+      'opacity','1');
+  }, 100);
+
+  $('.overlay ').css(
+    'display','block');
+  setTimeout(function () {
+    $('.overlay ').css(
+      'opacity','0.7');
+  }, 100);
+}, 2000);
+
+
 $(function(){
+
+$('.button_toggle').on('click',function(){
+        $('.main_navigation').toggleClass('open');
+      });
+
   scan.onclick = function(){
-    alert('test');
+    move(scanTest.number);
     if(click<=6){
       $.ajax({
         type: 'POST',
@@ -26,21 +49,53 @@ $(function(){
       }
     });
 
-
-
-
-     
       click++;
-       scanTest.number = click;
+      scanTest.number = click;
       timer = setTimeout(function() {
         if( click==7){
           clearInterval(timer);
-          let li = document.getElementsByClassName('item1');
-          li[0].style.color = '#f5962e';
-          alert("Калибровка завершена")
+          logInfo_text.innerHTML = "Калибровка завершена"
+          $('.circle-loader').toggleClass('load-complete');
+          $('.checkmark').toggle();
+          setTimeout(function () {
+            head_window.innerHTML = "Поздравляю!"
+            text.innerHTML = "Калибровка датчика полностью закончена!";
+            $('.window').css(
+              'display','block');
+            setTimeout(function () {
+              $('.window').css(
+                'opacity','1');
+            }, 100);
+
+            $('.overlay ').css(
+              'display','block');
+            setTimeout(function () {
+              $('.overlay ').css(
+                'opacity','0.7');
+            }, 100);
+          }, 1000);
+
         } 
-        else alert("положите датчик в положение " + click + " и нажмите на кнопку 'Click me'");
-      }, 6000);
+        else {
+          head_window.innerHTML = "Что делать дальше?"
+          text.innerHTML = "Положите датчик в положение " + click + " и нажмите на кнопку 'Начать сбор данных'";
+          $('.window').css(
+            'display','block');
+          setTimeout(function () {
+            $('.window').css(
+              'opacity','1');
+          }, 100);
+
+          $('.overlay ').css(
+            'display','block');
+          setTimeout(function () {
+            $('.overlay ').css(
+              'opacity','0.7');
+          }, 100);
+          document.getElementById('click_me').click();
+
+        }
+      }, 11000);
     }
   }
 
@@ -49,10 +104,25 @@ $(function(){
 
 });
 
+
+$('#button_window').on('click',function(){
+  setTimeout(function () {
+    $('.window').css(
+      'display','none');
+  }, 200);
+  $('.window').css(
+    'opacity','0');
+  $('.overlay ').css(
+    'display','none');
+  setTimeout(function () {
+    $('.overlay ').css(
+      'opacity','0');
+  }, 300);
+});
+
 $(function(){
 
   $('#clickCalaboration').click(function(){
-    $('.wrapper').toggleClass('open_settings');
     $.ajax({
       type: 'POST',
       data: JSON.stringify(data),
@@ -78,7 +148,7 @@ $(function(){
 
   });
 
-  $('.circleButton').on('click',function(){ 
+  $('#open_button').on('click',function(){ 
 
 
     $('.wrapper').toggleClass('open_settings');
@@ -92,6 +162,23 @@ $(function(){
 
 
 });
+
+let row = document.getElementsByClassName('row');
+let rowElements = document.getElementsByClassName('element');
+let xhrReqMatrix = new XMLHttpRequest();
+xhrReqMatrix.open('GET', 'json/matrix.json', true);
+xhrReqMatrix.send(null);
+xhrReqMatrix.onreadystatechange = function() {
+  if(this.status == 200) {
+    matrix = JSON.parse(xhrReqMatrix.responseText);
+    for( let i = 0; i < rowElements.length; i++){
+      rowElements[i].innerHTML = '[' +  +matrix.matrixReady[i] + ']';
+    }
+    console.log(xhrReqMatrix.responseText);
+    
+  }
+
+};
 
 var xhrReq = new XMLHttpRequest();
 xhrReq.open('GET', 'COM.json', true);
@@ -141,9 +228,9 @@ Art2.onchange = function(){
 
 
 var statusBarCheck = false;
-function move() {
-  var elem = document.getElementById("myBar");   
-  var width = 20;
+function move(num) {
+  var elem = document.getElementById("myBar" + num);   
+  var width = 0;
   var id = setInterval(frame, 100);
   function frame() {
     if (width >= 100) {
@@ -158,6 +245,7 @@ function move() {
     }
   }
 };
+
 
 
 

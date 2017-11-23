@@ -7,9 +7,33 @@ var path = require("path");
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var math = require('mathjs');
-
+var lsq = require('least-squares');
+math.config({
+  number: 'number'
+});
 var portsNum = [], SerialPortCheck = false, thermodata = [], settingsCOM, parsedSettings, arrayPos = [], arrayBuff = [] ;
 var meanResuts = [[],[],[],[],[],[]];
+var matrix = [],
+Y =
+[
+[1,0,0,-1,0,0,0,-1,0,0,1,0,0,0,1,0,0,-1],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+],
+Ymin =  [
+[1,0,0,-1,0,0,0,-1,0,0,1,0,0,0,1,0,0,-1]],
+devidedMatrix = [], matrix3x3 = [[],[],[]], vector = [];
+
+
 
 var SerialPort = require("serialport");
 var angles = 0, timer, portOpen = false, COM, Input,serialPort, anglesArray = [], i =0, check = 1;
@@ -18,7 +42,7 @@ app.use(express.static('views'));
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//полчение и запись всех доступных портов на компьютере 
+//получение и запись всех доступных портов на компьютере 
 SerialPort.list(function (err, ports) {
   ports.forEach(function(port) {
     portsNum.push(port.comName)
@@ -31,55 +55,62 @@ SerialPort.list(function (err, ports) {
 function meanValue(){
   for(let y = 1; y < 7; y++){
     var row = -1;
+    //открытие файла с данными для колибровки 
     fs.readFile(__dirname +'/views/cal' + y +'.json', 'utf8', function(err, data) {
       row ++;
-            //fs.readFile(__dirname +'/views/cal2.json', 'utf8', function(err, data) {
-              if (err) throw err;
-              var dataColibration = JSON.parse(data);
-              dataColibration.shift();
-              dataColibration.pop();
+      if (err) throw err;
+      var dataColibration = JSON.parse(data);
+      dataColibration.shift();
+      dataColibration.pop();
             //console.log(dataColibration);
             for(let y =0; y < 3; y++) {
               for (let i = 0; i < dataColibration.length; i++) {
+                //первичный отсев данных, проверяя их длинну 
                 if (dataColibration[i].length < 15 || dataColibration[i].length > 18) {
-                  console.log( "удаляем элемент массива: " + dataColibration[i]);
-                  dataColibration.splice(i, 1);
-                  i--;
-                  continue;
-                }
-                let buf = dataColibration[i].split(';');
-                    if (+buf[y] >= -1.5 && +buf[y] <= 1.5) {
+                 // console.log( "удаляем элемент массива: " + dataColibration[i]);
+                 dataColibration.splice(i, 1);
+                 i--;
+                 continue;
+               }
+               let buf = dataColibration[i].split(';');
+                //вторичная проверкаб проверяя непосредственно значение каждого положения
+                if (+buf[y] >= -1.5 && +buf[y] <= 1.5) {
+                      //запись в массив значений по первому столбцу
                       arrayPos.push(buf[y]);
                     }
                     else {
-                      console.log("Не попало значение: " + buf);
+                      //console.log("Не попало значение: " + buf);
 
                     }
                   }
-                  console.log( "среднее значение: " + math.mean(arrayPos));
+                  //console.log( "среднее значение: " + math.mean(arrayPos));
+                  //средняя велечина первого столба с последующим округлением
                   meanResuts[row].push((math.mean(arrayPos)).toFixed(3));
+                  //очищение массива
                   arrayPos.splice(0, arrayPos.length);
 
                 }
-                console.log("meanResuts " + meanResuts);
+                //console.log("meanResuts " + meanResuts);
               });
   }
 
   setTimeout(function() { 
    console.log( meanResuts);
    positionDedect();
+   setTimeout(function() { 
+     calibration();
+   }, 1000);
  }, 1000);
 
 };
 
 function chesck(){
   meanValue();
-
 }
 
 chesck();
 
-
+//проверка на положение датчика для дальнейшей калибровки
 function positionDedect(){
  let buf = 0;
  console.log('test');
@@ -120,15 +151,78 @@ function positionDedect(){
       }
     }
   }
+
 }
 console.log(meanResuts);
-
+console.log();
 }
 
+function calibration(){
+  var  A1, A2, A3;
+  let pos = 0;
+  for( let i = 0; i < 6; i++){
+   matrix[pos] = A1 = [meanResuts[i][0], meanResuts[i][1], meanResuts[i][2], 0,0,0,0,0,0,1,0,0]; pos++; 
+   matrix[pos] = A2 = [0,0,0,meanResuts[i][0], meanResuts[i][1], meanResuts[i][2],0,0,0,0,1,0]; pos++;  
+   matrix[pos] =  A3 = [0,0,0,0,0,0,meanResuts[i][0], meanResuts[i][1], meanResuts[i][2],0,0,1]; pos++;  
+   // console.log("A1 = " + A1);
+    /*for( let y = 0; y < A1.length; y++){
+      matrix[i][y] = A1[0][y];
+      matrix[i++][y] = A2[0][y];
+      matrix[i+2][y] = A3[0][y];
+    } */
+  }
+
+  for(let i = 0; i<matrix.length; i++){
+    for(let y = 0; y < matrix[i].length; y++){
+      matrix[i][y] = +matrix[i][y];
+      //console.log("Тип переменной: " + typeof matrix[i][y]);
+    }
+  }
+
+  for(let i = 0; i<Y.length; i++){
+    for(let y = 0; y < Y[i].length; y++){
+      Y[i][y] = +Y[i][y];
+    }
+  }
+  console.log('\r');
+  console.log(matrix);
+  console.log('\r');
+  var matrixReady = math.multiply(math.multiply(math.inv(math.multiply(math.transpose(matrix), matrix)), math.transpose(matrix)), math.transpose(Ymin));
+  let y = 0;
+  let u = 0;
+  let z = 0;
+  for( let i = 0 ; i < matrixReady.length; i++){
+    matrixReady[i] = matrixReady[i][0].toFixed(3);
+    if(i%3 == 0 && i != 0) y++;
+    if(y == 3) {
+      vector[z] = matrixReady[i];
+      z++;
+    }
+    else{
+      matrix3x3[y][u] = matrixReady[i];
+      u++;
+    }
 
 
-//setTimeout(function() { positionDedect(); }, 1000);
+  }
+  console.log(matrixReady);
+  fs.writeFileSync(__dirname +'/views/json/matrix.json',JSON.stringify({matrixReady}, null, 4));
+  console.log('\r');
 
+
+  console.log('\r');
+ //console.log(math.det(matrix));
+
+  //Y = parseFloat(Y);
+    //console.log(Y);
+    console.log("Получается мартица вида:");
+  //devidedMatrix = math.multiply(matrix, Y);
+  //console.log(devidedMatrix);
+  if(devidedMatrix == matrix){
+    console.log("Fuck!");
+  }
+
+}
 
 //открытие порта для передачи данных
 function SerialPortStart(COM, Input){
@@ -172,6 +266,7 @@ function dataSaving(){
   });
    fs.writeFileSync(__dirname +'/views/cal' + check +'.json',JSON.stringify(anglesArray));
    i = 0;
+   anglesArray.splice(0, anglesArray.length);
    portOpen = false;
 
  }, 5000);
@@ -187,7 +282,7 @@ app.post('/', function(req, res){
     if(portOpen)     portClosing();
 
     setTimeout(function() { dataSaving();
-    }, 1000);
+    }, 500);
     //clearTimeout(timer);
   }
   else if(req.body){
