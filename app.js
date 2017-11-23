@@ -50,7 +50,7 @@ SerialPort.list(function (err, ports) {
     
   });
   fs.writeFileSync(__dirname +'/views/COM.json',JSON.stringify({portsNum}, null, 4));
-  console.log(portsNum);
+  console.log("ports = " + portsNum);
 });
 
 function meanValue(){
