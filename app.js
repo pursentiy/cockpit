@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var port = process.env.PORT || 3000;
 
 var path = require("path");
 var fs = require('fs');
@@ -313,6 +314,6 @@ io.on('connection', function(socket){
 
 }); 
 
-http.listen(80, function(){ 
+http.listen(port, function(){ 
   console.log('server has started') 
 });
