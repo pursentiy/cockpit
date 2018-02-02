@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
 
 var path = require("path");
 var fs = require('fs');
@@ -50,7 +49,7 @@ SerialPort.list(function (err, ports) {
     
   });
   fs.writeFileSync(__dirname +'/views/COM.json',JSON.stringify({portsNum}, null, 4));
-  console.log("ports = " + portsNum);
+  console.log(portsNum);
 });
 
 function meanValue(){
@@ -314,6 +313,6 @@ io.on('connection', function(socket){
 
 }); 
 
-http.listen(port, function(){ 
+http.listen(3000, function(){ 
   console.log('server has started') 
 });
