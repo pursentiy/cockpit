@@ -219,9 +219,10 @@ $(function() {
 	}
 
 //Меню
-$('.button_toggle').on('click',function(){
-        $('.main_navigation').toggleClass('open');
-      });
+  $('.button_toggle').on('click',function(){
+    //$('.main_navigation').toggleClass('open');
+    $('.wrapper').toggleClass('open_menu');
+  });
 
 
 //Вкладка1
@@ -295,7 +296,7 @@ $('#fourth').on('click',function(){
 });
 
 /*Прерывание по нажатию*/
-$('.circleButton').on('click',function(){ 
+$('#button_window').on('click',function(){ 
 
 
 	$('.wrapper').toggleClass('open_settings');

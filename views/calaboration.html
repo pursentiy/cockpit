@@ -24,7 +24,7 @@
 		</div><br>
 
 		<br>
-		<div id="button_window">ПОНЯТНО</div>
+		<a id="button_window" class="waves-effect waves-light btn-large">Запуск</a>
 	</div>
 
 
@@ -33,18 +33,19 @@
 	<div class="wrapper">	
 		<header>
 			<div class="main_navigation">
-<br><br>
+				<br><br>
 				<ul>
-					<li id="first">DASHBOARD</li>
-					<li id="second">CALIBRATION</li>
+					<li id="first"><a href="index.html">DASHBOARD</a></li>
+					<li id="second"><a href="calaboration.html">CALIBRATION</a></li>
 					<li id="third">AVAR</li>
 					<li id="fourth">TABLES</li>
 				</ul>
+				<div class="button_toggle">
+					<input type="checkbox"><span class="transform"></span>
+				</div>
 			</div>
 
-			<div class="button_toggle">
-				<input type="checkbox"><span class="transform"></span>
-			</div>
+
 
 			<div class="firstBlock section2">
 				<h1>Калибровка датчика</h1>
@@ -61,7 +62,7 @@
 					</div>
 					<br>
 				</div>
-								<div class="block2">
+				<div class="block2">
 					<div class="input_settings">
 						<div class="post">
 
@@ -96,7 +97,8 @@
 					</div>
 					<br><br>
 				</div>
-				<div class="block1">
+
+				<div class="block1" id="anchor1">
 					<div class="w3-light-grey">
 						<br>
 						<br>
@@ -142,33 +144,65 @@
 				</div>
 
 				<div class="block3">
-					<ul id="matrix">
-						<li class="row 1">
-							<span class="element 1"></span>
-							<span class="element 2"></span>
-							<span class="element 3"></span>
-						</li>
-						<li class="row 2">
-							<span class="element 1"></span>
-							<span class="element 2"></span>
-							<span class="element 3"></span>
-						</li>
-						<li class="row 3">
-							<span class="element 1"></span>
-							<span class="element 2"></span>
-							<span class="element 3"></span>
-						</li>
-						<li class="row 4">
-							<span class="element 1"></span>
-							<span class="element 2"></span>
-							<span class="element 3"></span>
-						</li>
-					</ul>
+					<div class="wrap">
+						<h2>Матрица Kx</h2>
+
+						<div class="log">
+							<span id="logInfo_text">Идет калибровка</span>
+							<br>
+							<div class="circle-loader">
+								<div class="checkmark draw"></div>
+							</div>
+							<br>
+						</div>
+
+						<ul id="matrix">
+							<li class="row 1">
+								<span class="element 1"></span>
+								<span class="element 2"></span>
+								<span class="element 3"></span>
+							</li>
+							<li class="row 2">
+								<span class="element 1"></span>
+								<span class="element 2"></span>
+								<span class="element 3"></span>
+							</li>
+							<li class="row 3">
+								<span class="element 1"></span>
+								<span class="element 2"></span>
+								<span class="element 3"></span>
+							</li>
+							<li class="row 4">
+								<span class="element 1"></span>
+								<span class="element 2"></span>
+								<span class="element 3"></span>
+							</li>
+						</ul>
+						<div id="coef" class="wrap">
+							<h2>Коэффициент b</h2>
+							<div class="log">
+								<span id="logInfo_text">Идет калибровка</span>
+								<br>
+								<div class="circle-loader">
+									<div class="checkmark draw"></div>
+								</div>
+								<br>
+							</div>
+							<ul id="coefficient">
+								<li class="coeff"></li>
+								<li class="coeff"></li>
+								<li class="coeff"></li>
+								<li class="coeff"></li>
+							</ul>
+						</div>
+					</div>
 				</div>
+
 				<div class="block4"></div>
-				<div class="block5"></div>
-				<div class="block6"></div>
+
 			</div>
+
+
 
 
 
@@ -176,9 +210,14 @@
 
 		</header>
 	</div>
-	<script src="js/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="/socket.io/socket.io.js"></script> 
 	<script type="text/javascript" src="js/calaboration.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
+<script>
+
+
+</script>
 </body>
 </html>

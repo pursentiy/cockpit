@@ -1,14 +1,23 @@
 @font-face {
 	font-family: "RalewayLight";
-	src: url("../fonts/Raleway-Light.ttf");
+	src: url("../fonts/CenturyGothic.ttf");
 }
 
 @font-face {
 	font-family: "RalewayExtraLight";
-	src: url("../fonts/Raleway-ExtraLight.ttf");
+	src: url("../fonts/CenturyGothic.ttf");
 }
 
+a{
+	outline:0;
+color: inherit !important;
+list-style: none !important;
+text-decoration: : none !important;
+}
 
+.btn-large{
+	color: #fff !important;
+}
 
 body{
 	margin:0;
@@ -91,7 +100,7 @@ header .mainBlock1{
 	right: 0; 
 	margin-left: auto; 
 	margin-right: auto; 
-	height:610px;
+	height:690px;
 	background:white;
 	margin:0px auto;
 	box-shadow: 0 0px 13px rgba(0,0,0,0.5)
@@ -409,14 +418,22 @@ header .main_navigation ul {
 	position:fixed;
 	width:40px;
 	height:36px;
-	right:30px;
+	left: 100%;
 	top:80px;
 	background: transparent;
 	z-index:321;
 }
 
+.openMenu{
+	transform:  translateX(50%) ;
+}
 
 
+.index_button{
+	left: 50%;
+	transform: translateX(-50%);
+	margin-top: 150px;
+}
 
 .button_toggle  span {
 	position: absolute;
@@ -464,6 +481,7 @@ input[type="checkbox"]:checked + span{
 	position: absolute;
 	width: 40px;
 	height: 2px;
+	left: 0;
 	background: #f5962e;
 	transition: all 0.3s;
 }
@@ -487,6 +505,9 @@ input[type="checkbox"]:checked + span{
 }
 .wrapper.open_settings {
 	transform:  translateX(-20%);
+}
+.wrapper.open_menu {
+	transform:  translateX(30%);
 }
 
 header .main_navigation.open{
@@ -687,7 +708,7 @@ header .input_settings .developer{
 
 .section2 [class^="block"]{
 	width: 60%;
-	height: 770px;
+	padding: 50px 0;
 	background: white;
 	margin: 0px auto;
 	box-shadow: 0 0px 13px rgba(0,0,0,0.5);
@@ -701,12 +722,62 @@ header .input_settings .developer{
 .section2 .block3{
 	display: flex;
 	align-items: center;
+	justify-content: center;
+}
+
+.section2 .block4{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.section2 .block4 ul{
+	display: flex;
+	justify-content: center;
+	font-size: 2em;
+}
+
+.section2 .block4 ul li{
+	margin: 0 10px;
+}
+
+.section2 [class^="block"] h1{
+	color: #000
+}
+
+.section2 .block3 h2, .section2 .block4 h2{
+	margin-bottom: 30px;
 }
 
 .section2 .block3 #matrix{
 	text-align: center;
-	font-size: 3.5em;
-	margin: 0 auto
+	font-size: 2em;
+	margin: 0 auto;
+	display: none;
+}
+
+.section2 .block3 #coef{
+	margin-top: 100px;
+
+}
+
+.section2 .log{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.section2 .log .circle-loader{
+	margin:  0 auto;
+}
+
+.section2 .block3 #coef ul{
+	font-size: 2em;
+	display: flex;
+	}
+
+.section2 .block3 #coef ul li{
+	margin: 0 10px;
 }
 
 .section2 .block3 #matrix span{
@@ -983,13 +1054,6 @@ header .input_settings .developer{
 	}
 
 	#button_window{
-		padding: 10px 20px;
-		width: 175px;
-		text-align: center;
-		margin: 0 auto;
-		background: #eeeeef;
-		color: #000;
-		cursor: pointer;
 		transition: 1s ease;
 	}
 
@@ -1169,6 +1233,10 @@ header .input_settings .developer{
 		header .main_navigation{
 			width: 50%;
 		}
+
+		.wrapper.open_menu {
+	transform:  translateX(50%);
+}
 
 		header .main_navigation ul li{
 			font-size: 1.2em;

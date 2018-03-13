@@ -31,9 +31,13 @@ setTimeout(function() {
 
 $(function(){
 
-$('.button_toggle').on('click',function(){
-        $('.main_navigation').toggleClass('open');
-      });
+
+
+
+  $('.button_toggle').on('click',function(){
+    //$('.main_navigation').toggleClass('open');
+    $('.wrapper').toggleClass('open_menu');
+  });
 
   scan.onclick = function(){
     move(scanTest.number);
@@ -54,10 +58,26 @@ $('.button_toggle').on('click',function(){
       timer = setTimeout(function() {
         if( click==7){
           clearInterval(timer);
+          coeffMatrixSet();
+          $('.section2 .log').css({
+            display: 'none'
+          });
+          $('.section2 .block3 #matrix').css({
+            display: 'block'
+          });
           logInfo_text.innerHTML = "Калибровка завершена"
           $('.circle-loader').toggleClass('load-complete');
           $('.checkmark').toggle();
           setTimeout(function () {
+
+  setTimeout(function () {
+    $(function(){
+     $('html, body').animate({
+      scrollTop: $(".block3").offset().top
+    }, 2000);
+   });
+  },1000);
+            
             head_window.innerHTML = "Поздравляю!"
             text.innerHTML = "Калибровка датчика полностью закончена!";
             $('.window').css(
@@ -105,6 +125,7 @@ $('.button_toggle').on('click',function(){
 });
 
 
+
 $('#button_window').on('click',function(){
   setTimeout(function () {
     $('.window').css(
@@ -134,19 +155,45 @@ $(function(){
       }
     });
 
-
-
-
+  setTimeout(function () {
+    $(function(){
+     $('html, body').animate({
+      scrollTop: $(".block1").offset().top
+    }, 2000);
+   });
+  },1000);
 
 
     socket.on('input', function(angles){ 
       console.log(angles)
     });
 
-    alert("положите датчик в положение " + click + " и нажмите на кнопку 'Click me'");
 
 
-  });
+   head_window.innerHTML = "Что делать дальше?"
+   text.innerHTML = "Положите датчик в положение " + click + " и нажмите на кнопку 'Начать сбор данных'";
+   $('.window').css(
+    'display','block');
+   setTimeout(function () {
+    $('.window').css(
+      'opacity','1');
+  }, 100);
+
+   $('.overlay ').css(
+    'display','block');
+   setTimeout(function () {
+    $('.overlay ').css(
+      'opacity','0.7');
+  }, 100);
+   document.getElementById('click_me').click();
+
+     setTimeout(function () {
+scroll();
+},1000);
+
+
+
+ });
 
   $('#open_button').on('click',function(){ 
 
@@ -163,22 +210,32 @@ $(function(){
 
 });
 
-let row = document.getElementsByClassName('row');
-let rowElements = document.getElementsByClassName('element');
-let xhrReqMatrix = new XMLHttpRequest();
-xhrReqMatrix.open('GET', 'json/matrix.json', true);
-xhrReqMatrix.send(null);
-xhrReqMatrix.onreadystatechange = function() {
-  if(this.status == 200) {
-    matrix = JSON.parse(xhrReqMatrix.responseText);
-    for( let i = 0; i < rowElements.length; i++){
-      rowElements[i].innerHTML = '[' +  +matrix.matrixReady[i] + ']';
-    }
-    console.log(xhrReqMatrix.responseText);
-    
-  }
 
-};
+
+function coeffMatrixSet(){
+  let row = document.getElementsByClassName('row');
+  let rowElements = document.getElementsByClassName('element');
+  let coefficientMatrix = document.getElementsByClassName('coeff');
+  let xhrReqMatrix = new XMLHttpRequest();
+  xhrReqMatrix.open('GET', 'json/matrix.json', true);
+  xhrReqMatrix.send(null);
+  xhrReqMatrix.onreadystatechange = function() {
+    if(this.status == 200) {
+      matrix = JSON.parse(xhrReqMatrix.responseText);
+      let y = 0;
+      for( let i = 0; i < rowElements.length; i++){
+        if(i%3==0 || i==0){
+          rowElements[i].innerHTML = '[' +  +matrix.matrixReady[i] + ']';
+          coefficientMatrix[y].innerHTML = '[' +  +matrix.matrixReady[i] + ']';
+          y++;
+        }
+        else  rowElements[i].innerHTML = '[' +  +matrix.matrixReady[i] + ']';
+      }
+      console.log(xhrReqMatrix.responseText); 
+    }
+  };
+}
+
 
 var xhrReq = new XMLHttpRequest();
 xhrReq.open('GET', 'COM.json', true);
